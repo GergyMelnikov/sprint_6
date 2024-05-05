@@ -32,16 +32,20 @@ class MainPage():
         self.wait = WebDriverWait(self.driver, 10)
         self.url = 'https://qa-scooter.praktikum-services.ru/'
 
+
     def open_main_page(self):
         self.driver.get(self.url)
+
 
     def scroll_to_question_8(self):
         question_8 = self.wait.until(EC.presence_of_element_located(self.QUESTION_8))
         self.driver.execute_script('arguments[0].scrollIntoView();', question_8)
 
+
     def click_on_question(self, question):
         element = self.wait.until(EC.element_to_be_clickable(getattr(MainPage, question)))
         element.click()
+
 
     def get_answer(self, answer):
         element = self.wait.until(EC.visibility_of_element_located(getattr(MainPage, answer)))
@@ -56,10 +60,9 @@ class TestMainPageQuestions():
 
     @classmethod
     def setup_class(cls):
-        cls.driver = webdriver.Firefox(executable_path='/home/schedude/webdriver/geckodriver')
+        cls.driver = webdriver.Firefox()
         cls.wait = WebDriverWait(cls.driver, 10)
         
-
 
     @pytest.mark.parametrize("question, answer, expected_text", [
         ("QUESTION_1", "ANSWER_1", "Сутки — 400 рублей. Оплата курьеру — наличными или картой."),
@@ -72,24 +75,14 @@ class TestMainPageQuestions():
         ("QUESTION_8", "ANSWER_8", "Да, обязательно. Всем самокатов! И Москве, и Московской области."),
     ])
     def test_question_text(self, question, answer, expected_text):
-        #self.driver.get('https://qa-scooter.praktikum-services.ru/')
-
         my_obj = MainPage(self.driver)
         my_obj.open_main_page()  
         my_obj.scroll_to_question_8()
         my_obj.click_on_question(question)
         received_text = my_obj.get_answer(answer)
-        #try: # Вроде заработало без костыля, с ожиданием до кликабельности вопроса
-        #    assert received_text == expected_text   
-        #except AssertionError:
-        #    time.sleep(1)
         assert received_text == expected_text  
+
 
     @classmethod
     def teardown_class(cls):
         cls.driver.quit()
-
-
-
-#asdf = TestMainPageQuestions()
-#asdf.test_question_text("QUESTION_1", "ANSWER_1", "Сутки — 400 рублей. Оплата курьеру — наличными или картой.")
