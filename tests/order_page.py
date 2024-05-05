@@ -33,9 +33,9 @@ class OrderPage():
     order_placed = [By.XPATH, '//div[contains(text(), "Заказ оформлен")]']
         
     
-    def __init__(self, driver):
+    def __init__(self, driver, wait):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        self.wait = wait
 
 
     def open_order(self, button):

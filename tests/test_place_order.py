@@ -23,11 +23,11 @@ class TestOrder():
 
     @pytest.mark.parametrize("button, name, second, city, metro_station, color, courier_comment", [
         ("page_button", "Вася", "Петров", "Москва", "Коломенская", "both", "Comment1"),
-        ("header_button", "Коля", "Иванов", "Москва", "Чистые пруды", "black", "Comment2")
+        ("header_button", "Коля", "Иванов", "Москва", "Чистые пруды", "black", "")
         ])
     def test_place_order(self, button, name, second, city, metro_station, color, courier_comment):
         
-        order = OrderPage()
+        order = OrderPage(self.driver, self.wait)
         order.open_order(button)
         order.fill_name(name)
         order.fill_sec_name(second)
