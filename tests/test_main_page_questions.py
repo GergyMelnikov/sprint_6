@@ -56,7 +56,7 @@ class TestMainPageQuestions():
 
     @classmethod
     def setup_class(cls):
-        cls.driver = webdriver.Firefox()
+        cls.driver = webdriver.Firefox(executable_path='/home/schedude/webdriver/geckodriver')
         cls.wait = WebDriverWait(cls.driver, 10)
         
 
@@ -72,9 +72,10 @@ class TestMainPageQuestions():
         ("QUESTION_8", "ANSWER_8", "Да, обязательно. Всем самокатов! И Москве, и Московской области."),
     ])
     def test_question_text(self, question, answer, expected_text):
-        self.driver.get('https://qa-scooter.praktikum-services.ru/')
+        #self.driver.get('https://qa-scooter.praktikum-services.ru/')
 
-        my_obj = MainPage(self.driver)  
+        my_obj = MainPage(self.driver)
+        my_obj.open_main_page()  
         my_obj.scroll_to_question_8()
         my_obj.click_on_question(question)
         received_text = my_obj.get_answer(answer)
@@ -87,3 +88,8 @@ class TestMainPageQuestions():
     @classmethod
     def teardown_class(cls):
         cls.driver.quit()
+
+
+
+#asdf = TestMainPageQuestions()
+#asdf.test_question_text("QUESTION_1", "ANSWER_1", "Сутки — 400 рублей. Оплата курьеру — наличными или картой.")
