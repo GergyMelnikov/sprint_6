@@ -4,7 +4,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import pytest
-from main_page import MainPage
+
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from pages.main_page import MainPage
 
 
 class TestMainPageQuestions():

@@ -7,7 +7,10 @@ import random
 import time
 import pytest
 
-from order_page import OrderPage
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from pages.order_page import OrderPage
 
 
 class TestOrder():
