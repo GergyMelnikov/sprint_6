@@ -4,6 +4,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import pytest
+import allure
 
 class Logo():
     
@@ -16,14 +17,17 @@ class Logo():
         self.wait = wait
 
 
+    @allure.step('Открыть главную страницу')
     def open_main(self):
         self.driver.get('https://qa-scooter.praktikum-services.ru/')
 
 
+    @allure.step('Нажать на логотип яндекса в хедере')
     def click_on_yandex_logo(self):
         self.wait.until(EC.element_to_be_clickable(self.yandex_logo)).click()
 
 
+    @allure.step('Нажать на логотип сервиса в хедере')
     def click_on_scotokat_logo(self):
         self.wait.until(EC.element_to_be_clickable(self.scotokat_logo)).click()
     

@@ -4,6 +4,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import pytest
+import allure
 
 import sys
 import os
@@ -21,7 +22,7 @@ class TestMainPageQuestions():
         cls.driver = webdriver.Firefox()
         cls.wait = WebDriverWait(cls.driver, 10)
         
-
+    @allure.story("Проверка отображения ответов на вопросы")
     @pytest.mark.parametrize("question, answer, expected_text", [
         ("QUESTION_1", "ANSWER_1", "Сутки — 400 рублей. Оплата курьеру — наличными или картой."),
         ("QUESTION_2", "ANSWER_2", "Пока что у нас так: один заказ — один самокат. Если хотите покататься с друзьями, можете просто сделать несколько заказов — один за другим."),
@@ -33,12 +34,14 @@ class TestMainPageQuestions():
         ("QUESTION_8", "ANSWER_8", "Да, обязательно. Всем самокатов! И Москве, и Московской области."),
     ])
     def test_question_text(self, question, answer, expected_text):
-        my_obj = MainPage(self.driver, self.wait)
-        my_obj.open_main_page()  
-        my_obj.scroll_to_question_8()
-        my_obj.click_on_question(question)
-        received_text = my_obj.get_answer(answer)
-        assert received_text == expected_text  
+        with allure.step(f"Проверка ответа на вопрос '{question}', ожидаемый ответ: {expected_text}"):
+            my_obj = MainPage(self.driver, self.wait)
+            my_obj.open_main_page()  
+            my_obj.scroll_to_question_8()
+            my_obj.click_on_question(question)
+            received_text = my_obj.get_answer(answer)
+            
+            assert received_text == expected_text  
 
 
     @classmethod

@@ -4,6 +4,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import pytest
+import allure
 
 
 class MainPage():
@@ -33,20 +34,26 @@ class MainPage():
         self.url = 'https://qa-scooter.praktikum-services.ru/'
 
 
+    @allure.step('Открыть главную страницу')
     def open_main_page(self):
         self.driver.get(self.url)
 
 
+    @allure.step('Прокрутить страницу к последнему вопросу')
     def scroll_to_question_8(self):
         question_8 = self.wait.until(EC.presence_of_element_located(self.QUESTION_8))
         self.driver.execute_script('arguments[0].scrollIntoView();', question_8)
 
 
+    @allure.step('Нажать на вопрос')
+    @allure.description('Вопрос необходимо указать при вызове метода в формате "QUESTION_1", где число в конце - порядковый номер вопроса от "1" до "8"')
     def click_on_question(self, question):
         element = self.wait.until(EC.element_to_be_clickable(getattr(MainPage, question)))
         element.click()
 
 
+    @allure.step('Получить ответ на вопрос')
+    @allure.description('При обращении к методу указать "ANSWER_1", где число в конце - порядковый номер ответа на вопрос от "1" до "8"')
     def get_answer(self, answer):
         element = self.wait.until(EC.visibility_of_element_located(getattr(MainPage, answer)))
         return element.text

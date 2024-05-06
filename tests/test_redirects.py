@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import random
 import time
 import pytest
+import allure
 
 import sys
 import os
@@ -25,6 +26,7 @@ class TestRedirections():
         cls.wait = WebDriverWait(cls.driver, 10)
 
 
+    @allure.title('Тест редиректа по нажатию на логотип сервиса в хедере.')
     def test_redirect_to_main(self):
         logo_page = Logo(self.driver, self.wait)
         order_page = OrderPage(self.driver, self.wait)
@@ -34,6 +36,7 @@ class TestRedirections():
         assert self.driver.current_url == 'https://qa-scooter.praktikum-services.ru/'
 
 
+    @allure.title('Тест редиректа по нажатию на логотип яндекса в хедере.')
     def test_redirect_to_dzen(self):
         redirect_test = Logo(self.driver, self.wait)
         redirect_test.open_main()

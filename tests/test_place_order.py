@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import random
 import time
 import pytest
+import allure
 
 import sys
 import os
@@ -23,7 +24,8 @@ class TestOrder():
         cls.driver = webdriver.Firefox()
         cls.wait = WebDriverWait(cls.driver, 10)
 
-
+    @allure.title('Проверка оформления заказа')
+    @allure.description('Переходим к созданию заказа, заполняем форму, формируем заказ, проверяем появление окна "Заказ оформлен".')
     @pytest.mark.parametrize("button, name, second, city, metro_station, color, courier_comment", [
         ("page_button", "Вася", "Петров", "Москва", "Коломенская", "both", "Comment1"),
         ("header_button", "Коля", "Иванов", "Москва", "Чистые пруды", "black", "")
