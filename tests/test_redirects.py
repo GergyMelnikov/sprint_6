@@ -41,9 +41,9 @@ class TestRedirections():
         
         tabs = self.driver.window_handles
         self.driver.switch_to.window(tabs[-1])        
-        current_url = self.driver.current_url
         
         self.wait.until(EC.visibility_of_element_located((By.XPATH, '//button[text()="Найти"]')))
+        current_url = self.driver.current_url
         assert 'dzen' in current_url
 
 
