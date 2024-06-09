@@ -31,5 +31,5 @@ class TestRedirections():
         redirect_test.switch_to_last_browser_tab()        
         
         redirect_test.wait_until_visibility(redirect_test.find_button_on_ya)
-        current_url = redirect_test.get_current_url()
+        current_url = redirect_test.get_current_url() # А в тесте норм обращаться к методу BasePage или лучше делать метод в тестируемой-пейдже, и обращаться из теста к нему?
         assert 'dzen' in current_url
