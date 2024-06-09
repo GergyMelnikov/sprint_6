@@ -1,13 +1,9 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
-import pytest
 import allure
+from pages.base_page import BasePage
 
 
-class MainPage():
+class MainPage(BasePage):
     QUESTION_1 = [By.ID, 'accordion__heading-0']
     QUESTION_2 = [By.ID, 'accordion__heading-1']
     QUESTION_3 = [By.ID, 'accordion__heading-2']
@@ -25,35 +21,29 @@ class MainPage():
     ANSWER_6 = [By.XPATH, '//p[text()="Самокат приезжает к вам с полной зарядкой. Этого хватает на восемь суток — даже если будете кататься без передышек и во сне. Зарядка не понадобится."]']
     ANSWER_7 = [By.XPATH, '//p[text()="Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои."]'] 
     ANSWER_8 = [By.XPATH, '//p[text()="Да, обязательно. Всем самокатов! И Москве, и Московской области."]']
-    
 
-        
+
     def __init__(self, driver, wait):
-        self.driver = driver
-        self.wait = wait
-        self.url = 'https://qa-scooter.praktikum-services.ru/'
-
+        super().__init__(driver, wait)
 
     @allure.step('Открыть главную страницу')
     def open_main_page(self):
-        self.driver.get(self.url)
+        self.open_url(self.BASE_URL)
 
 
     @allure.step('Прокрутить страницу к последнему вопросу')
     def scroll_to_question_8(self):
-        question_8 = self.wait.until(EC.presence_of_element_located(self.QUESTION_8))
-        self.driver.execute_script('arguments[0].scrollIntoView();', question_8)
+        self.scroll_into_view(self.QUESTION_8)
 
 
     @allure.step('Нажать на вопрос')
-    @allure.description('Вопрос необходимо указать при вызове метода в формате "QUESTION_1", где число в конце - порядковый номер вопроса от "1" до "8"')
+    @allure.description('Вопрос необходимо указать при вызове метода в формате "QUESTION_1"(строка), где число в конце - порядковый номер вопроса от "1" до "8"')
     def click_on_question(self, question):
-        element = self.wait.until(EC.element_to_be_clickable(getattr(MainPage, question)))
-        element.click()
+        self.click(getattr(self, question))
 
 
     @allure.step('Получить ответ на вопрос')
-    @allure.description('При обращении к методу указать "ANSWER_1", где число в конце - порядковый номер ответа на вопрос от "1" до "8"')
+    @allure.description('При обращении к методу указать "ANSWER_1"(строка), где число в конце - порядковый номер ответа на вопрос от "1" до "8"')
     def get_answer(self, answer):
-        element = self.wait.until(EC.visibility_of_element_located(getattr(MainPage, answer)))
-        return element.text
+        return self.get_text(getattr(self, answer))
+    

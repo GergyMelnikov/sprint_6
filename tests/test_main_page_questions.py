@@ -1,8 +1,3 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
 import pytest
 import allure
 
@@ -12,15 +7,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from pages.main_page import MainPage
 
 
+
 class TestMainPageQuestions():
     
     driver = None
 
-
-    @classmethod
-    def setup_class(cls):
-        cls.driver = webdriver.Firefox()
-        cls.wait = WebDriverWait(cls.driver, 10)
         
     @allure.story("Проверка отображения ответов на вопросы")
     @pytest.mark.parametrize("question, answer, expected_text", [
@@ -33,17 +24,12 @@ class TestMainPageQuestions():
         ("QUESTION_7", "ANSWER_7", "Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои."),
         ("QUESTION_8", "ANSWER_8", "Да, обязательно. Всем самокатов! И Москве, и Московской области."),
     ])
-    def test_question_text(self, question, answer, expected_text):
+    def test_question_text(self, driver, wait, question, answer, expected_text):
         with allure.step(f"Проверка ответа на вопрос '{question}', ожидаемый ответ: {expected_text}"):
-            my_obj = MainPage(self.driver, self.wait)
-            my_obj.open_main_page()  
-            my_obj.scroll_to_question_8()
-            my_obj.click_on_question(question)
-            received_text = my_obj.get_answer(answer)
+            main_page_obj = MainPage(driver, wait)
+            main_page_obj.open_main_page()  
+            main_page_obj.scroll_to_question_8()
+            main_page_obj.click_on_question(question)
+            received_text = main_page_obj.get_answer(answer)
             
             assert received_text == expected_text  
-
-
-    @classmethod
-    def teardown_class(cls):
-        cls.driver.quit()

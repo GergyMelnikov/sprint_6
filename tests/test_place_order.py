@@ -1,10 +1,3 @@
-from selenium import webdriver
-from selenium.webdriver import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import random
-import time
 import pytest
 import allure
 
@@ -19,20 +12,15 @@ class TestOrder():
     driver = None
 
 
-    @classmethod
-    def setup_class(cls):
-        cls.driver = webdriver.Firefox()
-        cls.wait = WebDriverWait(cls.driver, 10)
-
     @allure.title('Проверка оформления заказа')
     @allure.description('Переходим к созданию заказа, заполняем форму, формируем заказ, проверяем появление окна "Заказ оформлен".')
     @pytest.mark.parametrize("button, name, second, city, metro_station, color, courier_comment", [
         ("page_button", "Вася", "Петров", "Москва", "Коломенская", "both", "Comment1"),
         ("header_button", "Коля", "Иванов", "Москва", "Чистые пруды", "black", "")
         ])
-    def test_place_order(self, button, name, second, city, metro_station, color, courier_comment):
+    def test_place_order(self, driver, wait, button, name, second, city, metro_station, color, courier_comment):
         
-        order = OrderPage(self.driver, self.wait)
+        order = OrderPage(driver, wait)
         order.open_order(button)
         order.fill_name(name)
         order.fill_sec_name(second)
@@ -47,10 +35,5 @@ class TestOrder():
         order.press_place_order()
         order.confirm_order()
         
-        order_placed = order.wait.until(EC.visibility_of_element_located(order.order_placed)).text
+        order_placed = order.get_text(order.order_placed)
         assert 'Заказ оформлен' in order_placed
-
-
-    @classmethod
-    def teardown_class(cls):
-        cls.driver.quit()
